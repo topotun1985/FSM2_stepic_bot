@@ -1,17 +1,20 @@
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command, StateFilter
+from aiogram.filters.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import default_state, State, StatesGroup
-from aiogram.fsm.storage.redis import RedisStorage, Redis
+from aiogram.fsm.state import default_state
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message, PhotoSize
+from config.config import Config, load_config
 
-BOT_TOKEN = '7064168249:AAFlr6jFl6fCBH5liH45cqhHqP6GN6-HzBg'
 
-redis = Redis(host='localhost')
-storage = RedisStorage(redis=redis)
+config = load_config()
+
+BOT_TOKEN = config.tg_bot.token
+
+
 
 bot = Bot(BOT_TOKEN)
-dp = Dispatcher(storage=storage)
+dp = Dispatcher()
 
 user_dict = {}
 
@@ -267,5 +270,4 @@ async def send_echo(message: Message):
 
 
 
-if __name__ == '__main__':
-    dp.run_polling(bot)
+dp.run_polling(bot)
